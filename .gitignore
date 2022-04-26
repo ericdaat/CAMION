@@ -130,4 +130,5 @@ dmypy.json
 
 # Custom .gitignore
 data
+results
 .DS_Store
