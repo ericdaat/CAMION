@@ -24,7 +24,8 @@ class RegularOptimizer(BaseOptimizer):
     def __init__(self):
         super().__init__()
 
-    def run_optimization(self, S_j, P_i, W_ij, budget, max_growth):
+    def run_optimization(self, S_j, P_i, W_ij, budget,
+                         max_growth, max_decrease=0):
         P_j = np.dot(P_i, W_ij)
 
         c = W_ij.sum(axis=0) / P_j
@@ -33,8 +34,14 @@ class RegularOptimizer(BaseOptimizer):
             list(np.ones(c.shape[1]))
         ]
 
-        bounds = [[s, (1 + max_growth) * s]
-                   for s in S_j[0]]
+        # Boundaries
+        bounds = [
+            [
+                s * (1 - max_decrease),  # minimum capacity
+                s * (1 + max_growth)     # maximum capacity
+            ]
+            for s in S_j[0]
+        ]
 
         res = self.optim_with_linear_programming(
             c=-c,
@@ -52,7 +59,8 @@ class MaxiMinOptimizer(BaseOptimizer):
     def __init__(self):
         super().__init__()
 
-    def run_optimization(self, S_j, P_i, W_ij, budget, max_growth):
+    def run_optimization(self, S_j, P_i, W_ij, budget,
+                         max_growth, max_decrease=0):
         P_j = np.dot(P_i, W_ij)
 
         # Define c
@@ -78,8 +86,8 @@ class MaxiMinOptimizer(BaseOptimizer):
         b_2 = S_j.sum() + budget
 
         # Boundaries
-        S_j_min = S_j
-        S_j_max = S_j * (1 + max_growth)
+        S_j_min = S_j * (1 - max_decrease)  # minimum capacity
+        S_j_max = S_j * (1 + max_growth)    # maximum capacity
 
         bounds = np.vstack([
             np.asarray([[None], [None]]).T,  # no boundaries on z
