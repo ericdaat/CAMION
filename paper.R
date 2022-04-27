@@ -50,6 +50,54 @@ pop_locations <- read.csv(
   colClasses = c("ZIPCODE"="character")
 )
 
+# Table 1 ----------------------------------------------------------------------
+
+table1_pop <- pop_locations %>% 
+  group_by(COUNTY) %>% 
+  summarise(
+    # Count zip codes
+    n_zip_codes=n(),
+    # Population
+    total_population=sum(POPULATION),
+    median_population=median(POPULATION),
+    min_population=min(POPULATION),
+    max_population=max(POPULATION),
+    # Accessibility
+    median_accessibility=median(A_i),
+    min_accessibility=min(A_i),
+    max_accessibility=max(A_i),
+    # Optimization results
+    median_accessibility_regular=median(A_i_new_regular),
+    median_accessibility_maximin=median(A_i_new_maximin),
+    regular_optimization_delta=median(A_i_new_regular) - median(A_i),
+    maximin_optimization_delta=median(A_i_new_maximin) - median(A_i)
+  )
+
+table1_facilities <- facilities_with_capacities %>% 
+  group_by(Facility.County) %>% 
+  summarise(
+    # Count facilities
+    n_facilities=n(),
+    # Capacities
+    total_beds=sum(Measure.Value),
+    median_beds=median(Measure.Value),
+    min_beds=min(Measure.Value),
+    max_beds=max(Measure.Value),
+    # Optimization results
+    capacity_delta_avg_regular=mean(capacity_delta_regular),
+    capacity_delta_avg_maximin=mean(capacity_delta_maximin)
+  )
+
+table1 <- table1_pop %>% 
+  inner_join(table1_facilities, 
+             by=c("COUNTY"="Facility.County")) %>% 
+  t()
+
+write.csv(
+  x=table1,
+  file = "results/tables/table1.csv"
+)
+
 # Figure 1: Hospitals with Medical / Surgery beds in New York City -------------
 
 fig1_a <- ggplot() +
@@ -186,6 +234,7 @@ fig2 <- ggarrange(
   ggarrange(fig2_b, fig2_c, fig2_d,
             heights = c(.3, .3, .3),
             nrow=3, ncol = 1,
+            align = "v",
             labels=c("B", "C", "D")),
   nrow=1, ncol=2,
   labels=c("A", "")
@@ -202,7 +251,7 @@ ggsave(
 
 # Figure 3: --------------------------------------------------------------------  
   
-ggplot() +
+fig3_a <- ggplot() +
   geom_polygon(data=spdf_file %>% 
                  inner_join(pop_locations, c("id"="ZIPCODE")),
                aes(x=long,
@@ -219,16 +268,16 @@ ggplot() +
              shape=0) +
   coord_map() +
   scale_size_binned(range = c(.5, 5)) +
-  scale_fill_distiller(palette = "BuPu", direction = 1) +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
   scale_color_manual(values=COLORS_COUNTY, guide="none") +
   theme_void(base_size = BASE_SIZE) +
   theme(legend.position="bottom") +
   guides(size=guide_legend(title.position="top", nrow=2),
          fill=guide_legend(title.position="top", nrow=2)) +
-  labs(size="Capcity delta",
+  labs(size="Capacity delta",
        fill="Accessibility delta")
 
-ggplot() +
+fig3_b <- ggplot() +
   geom_polygon(data=spdf_file %>% 
                  inner_join(pop_locations, c("id"="ZIPCODE")),
                aes(x=long,
@@ -245,7 +294,7 @@ ggplot() +
              shape=0) +
   coord_map() +
   scale_size_binned(range = c(.5, 5)) +
-  scale_fill_distiller(palette = "BuPu", direction = 1) +
+  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
   scale_color_manual(values=COLORS_COUNTY, guide="none") +
   theme_void(base_size = BASE_SIZE) +
   theme(legend.position="bottom") +
@@ -254,3 +303,18 @@ ggplot() +
   labs(size="Capacity delta",
        fill="Accessibility delta")
 
+fig3 <- ggarrange(
+  fig3_a,
+  fig3_b,
+  nrow=1, ncol=2,
+  labels=c("A", "B")
+)
+
+ggsave(
+  fig3, 
+  filename="fig3.png",
+  path = "results/figures", 
+  width = 15,
+  height = 10,
+  dpi = 300
+)
