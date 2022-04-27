@@ -72,7 +72,8 @@ fig1_a <- ggplot() +
   theme_void(base_size = BASE_SIZE) +
   theme(legend.position="bottom") +
   guides(size=guide_legend(title.position="top", nrow=2),
-         fill=guide_legend(title.position="top", nrow=2)) +
+         fill=guide_legend(title.position="top", nrow=2, 
+                           override.aes = list(size = 7))) +
   labs(size="Number of beds",
        fill="Hospital county")
 
@@ -198,7 +199,58 @@ ggsave(
   height = 10,
   dpi = 300
 )
+
+# Figure 3: --------------------------------------------------------------------  
   
-  
-  
-  
+ggplot() +
+  geom_polygon(data=spdf_file %>% 
+                 inner_join(pop_locations, c("id"="ZIPCODE")),
+               aes(x=long,
+                   y=lat,
+                   group=group,
+                   fill=A_i_delta_regular),
+               color="black",
+               size=.1) +
+  geom_point(data=facilities_with_capacities,
+             aes(x=Facility.Longitude,
+                 y=Facility.Latitude,
+                 size=capacity_delta_regular,
+                 color=Facility.County),
+             shape=0) +
+  coord_map() +
+  scale_size_binned(range = c(.5, 5)) +
+  scale_fill_distiller(palette = "BuPu", direction = 1) +
+  scale_color_manual(values=COLORS_COUNTY, guide="none") +
+  theme_void(base_size = BASE_SIZE) +
+  theme(legend.position="bottom") +
+  guides(size=guide_legend(title.position="top", nrow=2),
+         fill=guide_legend(title.position="top", nrow=2)) +
+  labs(size="Capcity delta",
+       fill="Accessibility delta")
+
+ggplot() +
+  geom_polygon(data=spdf_file %>% 
+                 inner_join(pop_locations, c("id"="ZIPCODE")),
+               aes(x=long,
+                   y=lat,
+                   group=group,
+                   fill=A_i_delta_maximin),
+               color="black",
+               size=.1) +
+  geom_point(data=facilities_with_capacities,
+             aes(x=Facility.Longitude,
+                 y=Facility.Latitude,
+                 size=capacity_delta_maximin,
+                 color=Facility.County),
+             shape=0) +
+  coord_map() +
+  scale_size_binned(range = c(.5, 5)) +
+  scale_fill_distiller(palette = "BuPu", direction = 1) +
+  scale_color_manual(values=COLORS_COUNTY, guide="none") +
+  theme_void(base_size = BASE_SIZE) +
+  theme(legend.position="bottom") +
+  guides(size=guide_legend(title.position="top", nrow=2),
+         fill=guide_legend(title.position="top", nrow=2)) +
+  labs(size="Capacity delta",
+       fill="Accessibility delta")
+
