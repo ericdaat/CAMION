@@ -22,6 +22,9 @@ class E2SFCA(object):
             )
             lower_distance = upper_distance
 
+        # Replace nan with 0
+        W_ij = np.nan_to_num(W_ij, 0)
+
         return W_ij
 
     def compute_accessibility_score(self, weights):

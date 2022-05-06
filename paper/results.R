@@ -101,13 +101,19 @@ write.csv(
 # Figure 1: Hospitals with Medical / Surgery beds in New York City -------------
 
 fig1_a <- ggplot() +
-  geom_polygon(data=spdf_file,
+  geom_polygon(data=spdf_file %>% 
+                 inner_join(pop_locations, c("id"="ZIPCODE")),
                aes(x=long,
                    y=lat,
-                   group=group),
+                   group=group,
+                   fill=POPULATION),
                color="black",
-               alpha=0,
+               alpha=0.6,
                size=.1) +
+  scale_fill_distiller(palette = "PuBu", direction=1) +
+  guides(fill=guide_legend(title.position="top", nrow=2)) +
+  labs(fill="Population") +
+  new_scale("fill") +
   geom_point(data=facilities_with_capacities,
              aes(x=Facility.Longitude,
                  y=Facility.Latitude,
@@ -271,8 +277,11 @@ fig3_a <- ggplot() +
                  color=Facility.County),
              shape=0) +
   coord_map() +
-  scale_size_binned(range = c(.5, 5)) +
-  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
+  scale_size_binned(range = c(.5, 5), 
+                    limits=c(0, 300)) +
+  scale_fill_distiller(palette = "YlGnBu", 
+                       direction = 1,
+                       limits=c(0, 0.0003)) +
   scale_color_manual(values=COLORS_COUNTY, guide="none") +
   theme_void(base_size = BASE_SIZE) +
   theme(legend.position="bottom") +
@@ -297,8 +306,11 @@ fig3_b <- ggplot() +
                  color=Facility.County),
              shape=0) +
   coord_map() +
-  scale_size_binned(range = c(.5, 5)) +
-  scale_fill_distiller(palette = "YlGnBu", direction = 1) +
+  scale_size_binned(range = c(.5, 5), 
+                    limits=c(0, 300)) +
+  scale_fill_distiller(palette = "YlGnBu", 
+                       direction = 1,
+                       limits=c(0, 0.0003)) +
   scale_color_manual(values=COLORS_COUNTY, guide="none") +
   theme_void(base_size = BASE_SIZE) +
   theme(legend.position="bottom") +
@@ -311,7 +323,9 @@ fig3 <- ggarrange(
   fig3_a,
   fig3_b,
   nrow=1, ncol=2,
-  labels=c("A", "B")
+  labels=c("A", "B"),
+  common.legend = TRUE,
+  legend = "bottom"
 )
 
 ggsave(
@@ -322,3 +336,4 @@ ggsave(
   height = 10,
   dpi = 300
 )
+
