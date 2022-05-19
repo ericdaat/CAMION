@@ -1,5 +1,12 @@
 # CAMION: a catchment area maximization algorithm with Linear Programming
 
+Eric Daoud<sup>1,2</sup>, Marc Lelarge<sup>2</sup>, Fabien Reyal<sup>1,3,4</sup>
+
+1. Residual Tumor & Response to Treatment Laboratory, RT2Lab, INSERM, U932 Immunity and Cancer, Institut Curie, Université Paris, 75005 Paris, France
+2. INRIA, DI/ENS, PSL Research University, Paris, France
+3. Department of Surgery, Institut Curie, Paris, Frances
+4. Department of Surgery, Institut Jean Godinot, Reims, France
+
 ## Introduction
 
 Accessibility refers to the relative ease by which services can be reached from a given location (1). Accessibility can be defined by spatial factors, determined by where you are; and non-spatial factors, determined by who you are (2). Spatial accessibility methods assess the availability of supply locations from demand locations, connected by a travel impedance metric. Supply locations are characterized by their capacity or quantity of available resource. Similarly, demand locations are characterized by their population.
