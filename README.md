@@ -13,7 +13,6 @@ To reach equal access to healthcare, quadratic programming has been used to  min
 
 However, most of the previous algorithms seek locations to open new health facilities. In this work, we are interested in the case where the health facilities are fixed, and the only lever to improve accessibility is to increase their capacities. Given a capacity budget, we want to know which facilities to grow and by how much. We introduce CAMION, an accessibility optimization algorithm based on Floating Catch-ment Area and Linear Programming. The initial accessibility score was computed with the Enhanced Two Step Floating Catchment Area (e2SFCA) (6) but our algorithm can generalize to more FCA derivatives. We demonstrated our algorithm on Health Facilities in New York City.
 
-
 ## Datasets
 
 We apply our method to Health Facilities in New York City. We used datasets downloaded from NYC Open Data website , which lists free public data from New York City agencies and other partners. We downloaded the Zip Codes boundaries and census statistics in New York City , provided by the Department of Information Technology & Telecommunications. We retrieved the list of health facilities  in the New York State, as well as their certifications for services and beds  . Both datasets were provided by the New York State Department of Health. We only kept the health facilities located in New York City, with Medical / Surgical beds. Every hospital has Latitude / Longitude coordinates. We used Zip Codes polygons centroids as reference point to compute the travel between Zip Codes and hospitals.
@@ -39,3 +38,27 @@ Download the datasets here:
 ![fig3](./results/figures/fig3.png)
 
 **Figure 3: Accessibility delta after running the optimization algorithm.** Both overall and maxi-min optimization algorithms are run. The optimization results are illustrated on maps (A) and (B) respectively. We displayed the accessibility delta as the difference of accessibility after and before the optimization. Every zip code is colored by accessibility delta. The health facilities are displayed as squares, sized accordingly to the capacity increase. The overall optimization increased facilities around New-York and Queens Counties (A). The maxi-min algorithm targeted Richmond facilities in priority (B).
+
+## References
+
+1.  Wang F. Measurement, Optimization, and Impact of Health Care Accessibility: A Methodological Review. Ann Assoc Am Geogr Assoc Am Geogr. 2012;102(5):1104–12.
+2. 	Khan AA. An integrated approach to measuring potential spatial access to health care services. Socioecon Plann Sci. 1992 Oct;26(4):275–87.
+3. 	Guagliardo MF. Spatial accessibility of primary care: concepts, methods and challenges. Int J Health Geogr. 2004 Feb 26;3(1):3.
+4. 	Luo W. Using a GIS-based floating catchment method to assess areas with shortage of physicians. Health Place. 2004 Mar 1;10(1):1–11.
+5. 	Joseph AE, Bantock PR. Measuring potential physical accessibility to general practitioners in rural areas: A meth-od and case study. Soc Sci Med. 1982 Jan 1;16(1):85–90.
+6. 	Luo W, Qi Y. An enhanced two-step floating catchment area (E2SFCA) method for measuring spatial accessibility to primary care physicians. Health Place. 2009 Dec 1;15(4):1100–7.
+7. 	Wang F. Why Public Health Needs GIS: A Methodological Overview. Ann GIS. 2020;26(1):1–12.
+8. 	Church RL. Location modelling and GIS. Geogr Inf Syst. 1999;1:293–303.
+9. 	Krugman P. Opinion | Why Inequality Matters. The New York Times [Inter-net]. 2013 Dec 16 [cited 2022 May 2]; Available from: https://www.nytimes.com/2013/12/16/opinion/krugman-why-inequality-matters.html
+10. Meyer D. Equity and efficiency in regional policy. Period Math Hung. 2008 Mar 1;56(1):105–19.
+11. Culyer AJ, Wagstaff A. Equity and equality in health and health care. J Health Econ. 1993 Dec;12(4):431–57.
+12. Hemenway D. The Optimal Location of Doctors. N Engl J Med. 1982 Feb 18;306(7):397–401.
+13. Fried C. Rights and health care--beyond equity and efficiency. N Engl J Med. 1975;
+14. Oliver A, Mossialos E. Equity of ac-cess to health care: Outlining the foun-dations for action. J Epidemiol Community Health. 2004 Sep 1;58:655–8.
+15. Murad A, Faruque F, Naji A, Tiwari A. Using the location-allocation P-median model for optimising locations for health care centres in the city of Jeddah City, Saudi Arabia. Geospatial Health. 2021 Oct 19;16(2).
+16. Shavandi H, Mahlooji H. A fuzzy queuing location model with a genetic algorithm for congested systems. Appl Math Comput - AMC. 2006 Oct 1;181:440–56.
+17. Casado S, Laguna M, Pacheco J. Heuristical labour scheduling to optimize airport passenger flows. J Oper Res Soc. 2005 Jun;56(6):649–58.
+18. Wang F, Tang Q. Planning toward Equal Accessibility to Services: A Quadratic Programming Approach. Environ Plan B Plan Des. 2013 Apr 1;40(2):195–212.
+19. Tao Z, Cheng Y, Dai T, Rosenberg MW. Spatial optimization of residential care facility locations in Beijing, China: maximum equity in accessibility. Int J Health Geogr. 2014 Sep 1;13(1):33.
+20. Luo J, Tian L, Luo L, Yi H, Wang F. Two-Step Optimization for Spatial Accessibility Improvement: A Case Study of Health Care Planning in Rural China. BioMed Res Int. 2017 Apr 18;2017:e2094654.
+21. Li X, Wang F, Yi H. A two-step approach to planning new facilities to-wards equal accessibility. Environ Plan B Urban Anal City Sci. 2017 Nov 1;44(6):994–1011.
